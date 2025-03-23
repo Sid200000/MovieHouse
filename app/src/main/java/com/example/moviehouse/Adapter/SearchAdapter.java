@@ -18,6 +18,7 @@ import com.example.moviehouse.Room.RoomMovie;
 
 import java.util.List;
 
+// Adapter for Search Page
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.searchRVAdapter> {
     Context ctx;
     List<RoomMovie> list;
@@ -38,14 +39,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.searchRVAd
     public void onBindViewHolder(@NonNull SearchAdapter.searchRVAdapter holder, int position) {
         RoomMovie movie = list.get(position);
         Glide.with(ctx)
-                .load("https://image.tmdb.org/t/p/w500"+movie.getPoster_path()) // Replace with your image URL
-                .placeholder(R.drawable.fauget) // Optional: Placeholder image while loading
-                .error(R.drawable.fauget) // Optional: Error image if loading fails
+                .load("https://image.tmdb.org/t/p/w500"+movie.getPoster_path()) // Loads Image into target
+                .placeholder(R.drawable.fauget)
+                .error(R.drawable.fauget)
                 .into(holder.movieImage);
         holder.movieTitle.setText(movie.getTitle());
         holder.movieDate.setText(movie.getRelease_date().substring(0,4));
         holder.itemView.setOnClickListener(v->{
-            Intent intent = new Intent(ctx, MovieDetails.class);
+            Intent intent = new Intent(ctx, MovieDetails.class);     // Clicking on Item takes you to MovieDetails activity
             intent.putExtra("MOVIE", movie);
             ctx.startActivity(intent);
         });

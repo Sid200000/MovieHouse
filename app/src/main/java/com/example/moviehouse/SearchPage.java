@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.moviehouse.Adapter.SearchAdapter;
 import com.example.moviehouse.Room.MovieDAO;
 import com.example.moviehouse.Room.MovieDatabase;
+import com.example.moviehouse.Room.MovieRepository;
 import com.example.moviehouse.Room.RoomMovie;
 
 import java.util.ArrayList;
@@ -51,8 +52,8 @@ public class SearchPage extends AppCompatActivity {
         initViews();
 
         executor.execute(()->{
-            MovieDatabase movieDatabase = MovieDatabase.getInstance(this);
-            movieList = movieDatabase.movieDao().getAllMovies();
+            MovieRepository movieRepository = new MovieRepository(this);
+            movieList = movieRepository.getAllMovies();
             searchAdapter = new SearchAdapter(this, movieList);
             searchRecyclerView.hasFixedSize();
             searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -94,7 +95,7 @@ public class SearchPage extends AppCompatActivity {
         List<RoomMovie> tempList = new ArrayList<>();
 
         for(RoomMovie movie : movieList){
-            if(movie.getTitle().contains(query))
+            if(movie.getTitle().toLowerCase().contains(query.toLowerCase()))
                     tempList.add(movie);
         }
         searchAdapter = new SearchAdapter(this, tempList);

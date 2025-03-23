@@ -19,6 +19,7 @@ import com.example.moviehouse.Room.RoomMovie;
 
 import java.util.List;
 
+//MovieAdapter for HomePage
 public class MoviesRVAdapter extends RecyclerView.Adapter<MoviesRVAdapter.moviesRVAdapter> {
 
     List<RoomMovie> movieList;
@@ -26,7 +27,7 @@ public class MoviesRVAdapter extends RecyclerView.Adapter<MoviesRVAdapter.movies
     public MoviesRVAdapter(Context ctx, List<RoomMovie> nowPlaying){
         this.ctx = ctx;
         this.movieList = nowPlaying;
-        System.out.println("MovieAdapter : "+nowPlaying.size());
+//        System.out.println("MovieAdapter : "+nowPlaying.size());
     }
     @NonNull
     @Override
@@ -39,9 +40,9 @@ public class MoviesRVAdapter extends RecyclerView.Adapter<MoviesRVAdapter.movies
     public void onBindViewHolder(@NonNull MoviesRVAdapter.moviesRVAdapter holder, int position) {
         RoomMovie movie = movieList.get(position);
         Glide.with(ctx)
-                .load("https://image.tmdb.org/t/p/w500"+movie.getPoster_path()) // Replace with your image URL
-                .placeholder(R.drawable.fauget) // Optional: Placeholder image while loading
-                .error(R.drawable.fauget) // Optional: Error image if loading fails
+                .load("https://image.tmdb.org/t/p/w500"+movie.getPoster_path())
+                .placeholder(R.drawable.fauget)
+                .error(R.drawable.fauget)
                 .into(holder.movieImage);
         holder.movieName.setText(movie.getTitle());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -64,8 +65,8 @@ public class MoviesRVAdapter extends RecyclerView.Adapter<MoviesRVAdapter.movies
         TextView movieName;
         public moviesRVAdapter(@NonNull View itemView) {
             super(itemView);
-            this.movieImage = itemView.findViewById(R.id.movie_image_holder);
-            this.movieName = itemView.findViewById(R.id.movie_name);
+            this.movieImage = itemView.findViewById(R.id.movie_image_holder); // Movie Image
+            this.movieName = itemView.findViewById(R.id.movie_name); // Movie Title Text
         }
     }
 }

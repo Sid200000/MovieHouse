@@ -23,28 +23,23 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MoviesRepository {
+public class APIMovieFetcher {
 
     private final Context context;
     private final OnFetchCompleteListener listener;
 
-    public interface OnLoopComplete{
-        void onSuccess();
-    }
 
-    private static boolean added = false;
-
-
-
-    public MoviesRepository(Context context, OnFetchCompleteListener listener) {
+    public APIMovieFetcher(Context context, OnFetchCompleteListener listener) {
         this.context = context;
         this.listener = listener;
     }
+
+    // this function makes the API call to fetch movies from remote
     public void fetchMovies(List<String[]> urls){
         boolean isInternetAvailable  = NetworkUtil.isInternetAvailable(context);
-        if(isInternetAvailable){
+        if(isInternetAvailable){        // Checks for whether the Internet connection is available or not
             OkHttpClient client = new OkHttpClient();
-            List<Pair> list = new ArrayList<>();
+            List<Pair> list = new ArrayList<>();    // List to store the movies in movielists and their category(now playing or trending)
             for(String[] url : urls){
                 Request request = new Request.Builder()
                         .url(url[0])
@@ -64,7 +59,7 @@ public class MoviesRepository {
                         list.add(new Pair(movieList, Integer.parseInt(url[1])));
                         System.out.println("---------------"+movieList.getResults().size());
                         if(list.size() == urls.size()) {
-                            saveToRoom(list);
+                            processMovies(list);
                         }
                     }
 
@@ -75,11 +70,12 @@ public class MoviesRepository {
                 });
             }
         }
-        else listener.onFetchComplete();
+        else listener.onFetchComplete();    // Callback when there is no Internet connection
 
     }
 
-    private void saveToRoom(List<Pair> movieList) {
+    // This functions extract all the movies from List of movieList objects
+    private void processMovies(List<Pair> movieList) {
         ExecutorService executorService  = Executors.newSingleThreadExecutor();
         List<RoomMovie> roomMovies = new ArrayList<>();
         executorService.execute(()->{
@@ -108,14 +104,15 @@ public class MoviesRepository {
             }
         });
     }
+
+    // This function saves movies to the Room database
     private void saveMovies(List<RoomMovie> roomMovies){
-        System.out.println("Outside Repo" + roomMovies.size());
         MovieRepository movieRepository = new MovieRepository(context);
-        new MovieRepository(context).insertMovies(roomMovies, new MovieRepository.MovieSaveCallback() {
+        movieRepository.insertMovies(roomMovies, new MovieRepository.MovieSaveCallback() {
             @Override
             public void onSuccess() {
-                System.out.println("Inside Repo : "+(movieRepository.getNowPlaying().size() + movieRepository.getTrendingMovies().size()));
-                listener.onFetchComplete();
+//                System.out.println("Inside Repo : "+(movieRepository.getNowPlaying().size() + movieRepository.getTrendingMovies().size()));
+                listener.onFetchComplete(); // Callback for notifying successful insertion of movies in DB
             }
             @Override
             public void onFailure(Exception e) {

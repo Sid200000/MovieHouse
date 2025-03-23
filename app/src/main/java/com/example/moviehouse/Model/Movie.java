@@ -12,14 +12,14 @@ public class Movie implements RealmObject {
     private String backdrop_path;
     private List<Integer> genre_ids;
     @PrimaryKey
-    private int id;
+    private int id;     // Movie Id
     private String original_language;
     private String original_title;
-    private String overview;
+    private String overview;    // Movie Description
     private double popularity;
-    private String poster_path;
+    private String poster_path;     // Image Location of the Movie Poster
     private String release_date;
-    private String title;
+    private String title;       // Title of Movie
     private boolean video;
     private double vote_average;
     private int vote_count;

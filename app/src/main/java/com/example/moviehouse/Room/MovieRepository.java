@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 public class MovieRepository {
 
 
-
+    // This is a callback for saving the movies in the database
     public interface MovieSaveCallback {
         void onSuccess();
         void onFailure(Exception e);
@@ -29,9 +29,9 @@ public class MovieRepository {
             try {
                 movieDao.clearMovies();
                 movieDao.insertMovies(movies); // Insert into RoomDB
-                callback.onSuccess();  // ✅ Notify success
+                callback.onSuccess();  // Callback for successful insertion of movies
             } catch (Exception e) {
-                callback.onFailure(e); // ❌ Notify failure
+                callback.onFailure(e); // Callback for Failure
             }
         });
     }
@@ -52,9 +52,9 @@ public class MovieRepository {
         executorService.execute(() -> {
             try {
                 movieDao.toggleBookMark(id);// ToggleBookMark
-                callback.onSuccess();  // ✅ Notify success
+                callback.onSuccess();  //  Callback for successful toggle
             } catch (Exception e) {
-                callback.onFailure(e); // ❌ Notify failure
+                callback.onFailure(e); //  Callback for failure
             }
         });
     }

@@ -36,9 +36,6 @@ public class MovieDetails extends AppCompatActivity {
 
     RoomMovie movie;
 
-    boolean status;
-
-    MovieDatabase movieDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,16 +60,15 @@ public class MovieDetails extends AppCompatActivity {
 //        binding.movieDetailsVoteCount.setText(movie.getVote_count());
 
         movieTitle.setText(movie.getTitle());
-        movieDesc.setText(movie.getOverview());
-        movieReleaseDate.setText(movie.getRelease_date().substring(0,4));
+        movieDesc.setText("Synopsis : " + movie.getOverview());
+        movieReleaseDate.setText("Release Year : " +movie.getRelease_date().substring(0,4));
 
         bookmarkMovie.setImageResource(R.drawable.bookmark_i);
         movieVoteCount.setText("Vote Count : "+movie.getVote_count());
-        bookmarkMovie.setOnClickListener(v->{
+        bookmarkMovie.setOnClickListener(v->{   // Button to toggle Bookmark of this movie
             movieRepository.toogleBookmark(movie.getId(), new MovieRepository.MovieSaveCallback() {
                 @Override
                 public void onSuccess() {
-                    // TODO : remove bookmark too
                     setBookMarkImage(movieRepository.getBookmarkStatus(movie.getId()));
                 }
 
@@ -85,9 +81,9 @@ public class MovieDetails extends AppCompatActivity {
         });
     }
 
-    private void setBookMarkImage(boolean status) {
+    private void setBookMarkImage(boolean status) { // Updates the ui after fetching bookmark status
         if(status) {
-            System.out.println("Status : "+status);
+//            System.out.println("Status : "+status);
             runOnUiThread(() -> bookmarkMovie.setImageResource(R.drawable.bookmark_a));
         }
         else bookmarkMovie.setImageResource(R.drawable.bookmark_i);
@@ -95,7 +91,7 @@ public class MovieDetails extends AppCompatActivity {
 
     void init(){
         executorService = Executors.newSingleThreadExecutor();
-        movie = getIntent().getParcelableExtra("MOVIE");
+        movie = getIntent().getParcelableExtra("MOVIE");    // Gets the data of the clicked movie through Intent
         movieImage = findViewById(R.id.movie_details_image);
         movieTitle = findViewById(R.id.movie_details_title);
         movieDesc = findViewById(R.id.movie_details_desc);

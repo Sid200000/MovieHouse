@@ -5,6 +5,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+// This is a single instance class which can directly access the DAO
 @Database(entities = {RoomMovie.class}, version = 3, exportSchema = false)
 public abstract class MovieDatabase extends RoomDatabase {
     private static volatile MovieDatabase INSTANCE;

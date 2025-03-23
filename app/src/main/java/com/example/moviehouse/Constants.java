@@ -1,5 +1,6 @@
 package com.example.moviehouse;
 
+// This class contains static final strings
 public class Constants {
      public static final String nowPlayingURL = "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=";
      public static final String trendingURL = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=";

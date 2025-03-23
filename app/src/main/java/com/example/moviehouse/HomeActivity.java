@@ -45,12 +45,12 @@ public class HomeActivity extends AppCompatActivity {
         search_page_buttton.setOnClickListener(v -> {
             Intent intent = new Intent(this, SearchPage.class);
             startActivity(intent);
-        });
+        }); // part of bottom nav bar
 
         bookmark_page_button.setOnClickListener(v->{
             Intent intent = new Intent(this, SavedMovies.class);
             startActivity(intent);
-        });
+        }); // part of bottom nav bar
 
         trendingRV.hasFixedSize();
         trendingRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -61,10 +61,10 @@ public class HomeActivity extends AppCompatActivity {
             MovieDatabase db = MovieDatabase.getInstance(this);
             List<RoomMovie> nowPlayingMovies = db.movieDao().getNowPlayingMovies();
             List<RoomMovie> trendingMovies = db.movieDao().getTrendingMovies();
-            System.out.println("movieListSize : "+nowPlayingMovies.size());
+//            System.out.println("movieListSize : "+nowPlayingMovies.size());
             nowPlayingMovieAdapter = new MoviesRVAdapter(this, nowPlayingMovies);
             trendingMovieAdapter = new MoviesRVAdapter(this, trendingMovies);
-            uiHandler.post(() ->{
+            uiHandler.post(() ->{       // Handle UI changes
                 nowPlayingRV.setAdapter(nowPlayingMovieAdapter);
                 trendingRV.setAdapter(trendingMovieAdapter);
             });
@@ -73,6 +73,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    // Initialize the views of this activity
     private void initViews() {
         nowPlayingRV = findViewById(R.id.nowplaying_rv);
         trendingRV = findViewById(R.id.trending_rv);
